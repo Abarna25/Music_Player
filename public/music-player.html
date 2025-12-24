@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Music Player</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      color: #e2e8f0;
+    }
+
+    .container {
+      max-width: 1200px;
+      width: 100%;
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .playlist-section {
+      flex: 1;
+      min-width: 300px;
+      background: rgba(30, 41, 59, 0.6);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 24px;
+      border: 1px solid rgba(148, 163, 184, 0.1);
+    }
+
+    .playlist-header {
+      margin-bottom: 20px;
+    }
+
+    .playlist-header h2 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #06b6d4;
+      margin-bottom: 4px;
+    }
+
+    .playlist-header p {
+      font-size: 14px;
+      color: #94a3b8;
+    }
+
+    .song-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 500px;
+      overflow-y: auto;
+      padding-right: 8px;
+    }
+
+    .song-list::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .song-list::-webkit-scrollbar-track {
+      background: rgba(148, 163, 184, 0.1);
+      border-radius: 3px;
+    }
+
+    .song-list::-webkit-scrollbar-thumb {
+      background: #06b6d4;
+      border-radius: 3px;
+    }
+
+    /* Hide radio buttons */
+    .song-radio {
+      display: none;
+    }
+
+    .song-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      background: rgba(30, 41, 59, 0.4);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 1px solid transparent;
+    }
+
+    .song-item:hover {
+      background: rgba(51, 65, 85, 0.6);
+      transform: translateX(4px);
+    }
+
+    .song-radio:checked + .song-item {
+      background: rgba(6, 182, 212, 0.2);
+      border-color: #06b6d4;
+    }
+
+    .song-album {
+      width: 48px;
+      height: 48px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #06b6d4, #0891b2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .song-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .song-title {
+      font-weight: 600;
+      font-size: 14px;
+      color: #e2e8f0;
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .song-artist {
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    .song-duration {
+      font-size: 12px;
+      color: #64748b;
+      font-weight: 500;
+    }
+
+    /* Music bars animation */
+    .music-bars {
+      display: none;
+      align-items: flex-end;
+      gap: 2px;
+      height: 16px;
+      width: 16px;
+    }
+
+    .song-radio:checked + .song-item .music-bars {
+      display: flex;
+    }
+
+    .bar {
+      width: 3px;
+      background: #06b6d4;
+      border-radius: 2px;
+      animation: wave 0.8s ease-in-out infinite;
+    }
+
+    .bar:nth-child(1) { animation-delay: 0s; }
+    .bar:nth-child(2) { animation-delay: 0.2s; }
+    .bar:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes wave {
+      0%, 100% { height: 4px; }
+      50% { height: 16px; }
+    }
+
+    /* Player section */
+    .player-section {
+      flex: 1;
+      min-width: 300px;
+      background: rgba(30, 41, 59, 0.6);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 32px;
+      border: 1px solid rgba(148, 163, 184, 0.1);
+    }
+
+    .album-art {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #06b6d4, #0891b2);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 80px;
+      box-shadow: 0 20px 40px rgba(6, 182, 212, 0.3);
+      transition: transform 0.3s ease;
+    }
+
+    .album-art:hover {
+      transform: scale(1.02);
+    }
+
+    .track-info {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .track-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #e2e8f0;
+      margin-bottom: 8px;
+    }
+
+    .track-artist {
+      font-size: 16px;
+      color: #94a3b8;
+    }
+
+    /* Progress bar */
+    .progress-container {
+      margin-bottom: 24px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 6px;
+      background: rgba(148, 163, 184, 0.2);
+      border-radius: 3px;
+      overflow: hidden;
+      cursor: pointer;
+      margin-bottom: 8px;
+    }
+
+    .progress-bar:hover {
+      height: 8px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: #06b6d4;
+      width: 35%;
+      transition: width 0.3s ease;
+      position: relative;
+    }
+
+    .progress-fill::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 12px;
+      height: 12px;
+      background: #e2e8f0;
+      border-radius: 50%;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .progress-bar:hover .progress-fill::after {
+      opacity: 1;
+    }
+
+    .time-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    /* Controls */
+    .controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .control-btn {
+      width: 48px;
+      height: 48px;
+      border: none;
+      background: rgba(148, 163, 184, 0.2);
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      color: #e2e8f0;
+      font-size: 18px;
+    }
+
+    .control-btn:hover {
+      background: rgba(148, 163, 184, 0.3);
+      transform: scale(1.1);
+    }
+
+    .control-btn:active {
+      transform: scale(0.95);
+    }
+
+    .play-btn {
+      width: 64px;
+      height: 64px;
+      background: #06b6d4;
+      font-size: 24px;
+    }
+
+    .play-btn:hover {
+      background: #0891b2;
+      box-shadow: 0 8px 16px rgba(6, 182, 212, 0.4);
+    }
+
+    /* Play/pause toggle */
+    .play-toggle {
+      display: none;
+    }
+
+    .play-icon::before {
+      content: '▶';
+    }
+
+    .play-toggle:checked ~ .controls .play-icon::before {
+      content: '⏸';
+    }
+
+    /* Volume control */
+    .volume-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .volume-icon {
+      color: #94a3b8;
+      font-size: 18px;
+    }
+
+    .volume-slider {
+      flex: 1;
+      height: 6px;
+      background: rgba(148, 163, 184, 0.2);
+      border-radius: 3px;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .volume-slider::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 70%;
+      background: #06b6d4;
+      border-radius: 3px;
+    }
+
+    .volume-slider:hover {
+      height: 8px;
+    }
+
+    /* Action buttons */
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(148, 163, 184, 0.1);
+    }
+
+    .action-checkbox {
+      display: none;
+    }
+
+    .action-label {
+      cursor: pointer;
+      color: #94a3b8;
+      font-size: 20px;
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+
+    .action-label:hover {
+      color: #06b6d4;
+      transform: scale(1.2);
+    }
+
+    .action-checkbox:checked + .action-label {
+      color: #06b6d4;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Playlist Section -->
+    <div class="playlist-section">
+      <div class="playlist-header">
+        <h2>My Playlist</h2>
+        <p>24 songs</p>
+      </div>
+      <div class="song-list">
+        <input type="radio" name="song" id="song1" class="song-radio" checked>
+        <label for="song1" class="song-item">
+          <div class="song-album">🎵</div>
+          <div class="song-info">
+            <div class="song-title">Blinding Lights</div>
+            <div class="song-artist">The Weeknd</div>
+          </div>
+          <div class="music-bars">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+          </div>
+          <div class="song-duration">3:20</div>
+        </label>
+
+        <input type="radio" name="song" id="song2" class="song-radio">
+        <label for="song2" class="song-item">
+          <div class="song-album">🎸</div>
+          <div class="song-info">
+            <div class="song-title">Shape of You</div>
+            <div class="song-artist">Ed Sheeran</div>
+          </div>
+          <div class="music-bars">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+          </div>
+          <div class="song-duration">3:54</div>
+        </label>
+
+        <input type="radio" name="song" id="song3" class="song-radio">
+        <label for="song3" class="song-item">
+          <div class="song-album">🎹</div>
+          <div class="song-info">
+            <div class="song-title">Someone Like You</div>
+            <div class="song-artist">Adele</div>
+          </div>
+          <div class="music-bars">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+          </div>
+          <div class="song-duration">4:45</div>
+        </label>
+
+        <input type="radio" name="song" id="song4" class="song-radio">
+        <label for="song4" class="song-item">
+          <div class="song-album">🎤</div>
+          <div class="song-info">
+            <div class="song-title">Levitating</div>
+            <div class="song-artist">Dua Lipa</div>
+          </div>
+          <div class="music-bars">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+          </div>
+          <div class="song-duration">3:23</div>
+        </label>
+
+        <input type="radio" name="song" id="song5" class="song-radio">
+        <label for="song5" class="song-item">
+          <div class="song-album">🎧</div>
+          <div class="song-info">
+            <div class="song-title">Starboy</div>
+            <div class="song-artist">The Weeknd</div>
+          </div>
+          <div class="music-bars">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+          </div>
+          <div class="song-duration">3:50</div>
+        </label>
+
+        <input type="radio" name="song" id="song6" class="song-radio">
+        <label for="song6" class="song-item">
+          <div class="song-album">🎶</div>
+          <div class="song-info">
+            <div class="song-title">Believer</div>
+            <div class="song-artist">Imagine Dragons</div>
+          </div>
+          <div class="music-bars">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+          </div>
+          <div class="song-duration">3:24</div>
+        </label>
+
+        <input type="radio" name="song" id="song7" class="song-radio">
+        <label for="song7" class="song-item">
+          <div class="song-album">🎵</div>
+          <div class="song-info">
+            <div class="song-title">Circles</div>
+            <div class="song-artist">Post Malone</div>
+          </div>
+          <div class="music-bars">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+          </div>
+          <div class="song-duration">3:35</div>
+        </label>
+
+        <input type="radio" name="song" id="song8" class="song-radio">
+        <label for="song8" class="song-item">
+          <div class="song-album">🎸</div>
+          <div class="song-info">
+            <div class="song-title">Happier</div>
+            <div class="song-artist">Marshmello</div>
+          </div>
+          <div class="music-bars">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+          </div>
+          <div class="song-duration">3:34</div>
+        </label>
+
+        <input type="radio" name="song" id="song9" class="song-radio">
+        <label for="song9" class="song-item">
+          <div class="song-album">🎹</div>
+          <div class="song-info">
+            <div class="song-title">Perfect</div>
+            <div class="song-artist">Ed Sheeran</div>
+          </div>
+          <div class="music-bars">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+          </div>
+          <div class="song-duration">4:23</div>
+        </label>
+
+        <input type="radio" name="song" id="song10" class="song-radio">
+        <label for="song10" class="song-item">
+          <div class="song-album">🎤</div>
+          <div class="song-info">
+            <div class="song-title">Stay</div>
+            <div class="song-artist">The Kid LAROI</div>
+          </div>
+          <div class="music-bars">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+          </div>
+          <div class="song-duration">2:21</div>
+        </label>
+
+        <input type="radio" name="song" id="song11" class="song-radio">
+        <label for="song11" class="song-item">
+          <div class="song-album">🎧</div>
+          <div class="song-info">
+            <div class="song-title">Heat Waves</div>
+            <div class="song-artist">Glass Animals</div>
+          </div>
+          <div class="music-bars">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+          </div>
+          <div class="song-duration">3:59</div>
+        </label>
+
+        <input type="radio" name="song" id="song12" class="song-radio">
+        <label for="song12" class="song-item">
+          <div class="song-album">🎶</div>
+          <div class="song-info">
+            <div class="song-title">Save Your Tears</div>
+            <div class="song-artist">The Weeknd</div>
+          </div>
+          <div class="music-bars">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+          </div>
+          <div class="song-duration">3:35</div>
+        </label>
+
+        <input type="radio" name="song" id="song13" class="song-radio">
+        <label for="song13" class="song-item">
+          <div class="song-album">🎵</div>
+          <div class="song-info">
+            <div class="song-title">Drivers License</div>
+            <div class="song-artist">Olivia Rodrigo</div>
+          </div>
+          <div class="music-bars">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+          </div>
+          <div class="song-duration">4:02</div>
+        </label>
+
+        <input type="radio" name="song" id="song14" class="song-radio">
+        <label for="song14" class="song-item">
+          <div class="song-album">🎸</div>
+          <div class="song-info">
+            <div class="song-title">Good 4 U</div>
+            <div class="song-artist">Olivia Rodrigo</div>
+          </div>
+          <div class="music-bars">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+          </div>
+          <div class="song-duration">2:58</div>
+        </label>
+
+        <input type="radio" name="song" id="song15" class="song-radio">
+        <label for="song15" class="song-item">
+          <div class="song-album">🎹</div>
+          <div class="song-info">
+            <div class="song-title">Peaches</div>
+            <div class="song-artist">Justin Bieber</div>
+          </div>
+          <div class="music-bars">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+          </div>
+          <div class="song-duration">3:18</div>
+        </label>
+
+        <input type="radio" name="song" id="song16" class="song-radio">
+        <label for="song16" class="song-item">
+          <div class="song-album">🎤</div>
+          <div class="song-info">
+            <div class="song-title">Montero</div>
+            <div class="song-artist">Lil Nas X</div>
+          </div>
+          <div class="music-bars">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+          </div>
+          <div class="song-duration">2:17</div>
+        </label>
+
+        <input type="radio" name="song" id="song17" class="song-radio">
+        <label for="song17" class="song-item">
+          <div class="song-album">🎧</div>
+          <div class="song-info">
+            <div class="song-title">Kiss Me More</div>
+            <div class="song-artist">Doja Cat</div>
+          </div>
+          <div class="music-bars">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+          </div>
+          <div class="song-duration">3:28</div>
+        </label>
+
+        <input type="radio" name="song" id="song18" class="song-radio">
+        <label for="song18" class="song-item">
+          <div class="song-album">🎶</div>
+          <div class="song-info">
+            <div class="song-title">Leave The Door Open</div>
+            <div class="song-artist">Bruno Mars</div>
+          </div>
+          <div class="music-bars">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+          </div>
+          <div class="song-duration">4:02</div>
+        </label>
+
+        <input type="radio" name="song" id="song19" class="song-radio">
+        <label for="song19" class="song-item">
+          <div class="song-album">🎵</div>
+          <div class="song-info">
+            <div class="song-title">Shivers</div>
+            <div class="song-artist">Ed Sheeran</div>
+          </div>
+          <div class="music-bars">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+          </div>
+          <div class="song-duration">3:27</div>
+        </label>
+
+        <input type="radio" name="song" id="song20" class="song-radio">
+        <label for="song20" class="song-item">
+          <div class="song-album">🎸</div>
+          <div class="song-info">
+            <div class="song-title">Easy On Me</div>
+            <div class="song-artist">Adele</div>
+          </div>
+          <div class="music-bars">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+          </div>
+          <div class="song-duration">3:44</div>
+        </label>
+
+        <input type="radio" name="song" id="song21" class="song-radio">
+        <label for="song21" class="song-item">
+          <div class="song-album">🎹</div>
+          <div class="song-info">
+            <div class="song-title">Bad Habits</div>
+            <div class="song-artist">Ed Sheeran</div>
+          </div>
+          <div class="music-bars">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+          </div>
+          <div class="song-duration">3:50</div>
+        </label>
+
+        <input type="radio" name="song" id="song22" class="song-radio">
+        <label for="song22" class="song-item">
+          <div class="song-album">🎤</div>
+          <div class="song-info">
+            <div class="song-title">Astronaut In The Ocean</div>
+            <div class="song-artist">Masked Wolf</div>
+          </div>
+          <div class="music-bars">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+          </div>
+          <div class="song-duration">2:11</div>
+        </label>
+
+        <input type="radio" name="song" id="song23" class="song-radio">
+        <label for="song23" class="song-item">
+          <div class="song-album">🎧</div>
+          <div class="song-info">
+            <div class="song-title">Mood</div>
+            <div class="song-artist">24kGoldn</div>
+          </div>
+          <div class="music-bars">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+          </div>
+          <div class="song-duration">2:20</div>
+        </label>
+
+        <input type="radio" name="song" id="song24" class="song-radio">
+        <label for="song24" class="song-item">
+          <div class="song-album">🎶</div>
+          <div class="song-info">
+            <div class="song-title">Positions</div>
+            <div class="song-artist">Ariana Grande</div>
+          </div>
+          <div class="music-bars">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+          </div>
+          <div class="song-duration">2:52</div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Player Section -->
+    <div class="player-section">
+      <input type="checkbox" id="playToggle" class="play-toggle">
+      
+      <div class="album-art">🎵</div>
+      
+      <div class="track-info">
+        <div class="track-title">Blinding Lights</div>
+        <div class="track-artist">The Weeknd</div>
+      </div>
+
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div class="progress-fill"></div>
+        </div>
+        <div class="time-labels">
+          <span>1:23</span>
+          <span>3:20</span>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button class="control-btn">⏮</button>
+        <button class="control-btn">⏪</button>
+        <label for="playToggle" class="control-btn play-btn">
+          <span class="play-icon"></span>
+        </label>
+        <button class="control-btn">⏩</button>
+        <button class="control-btn">⏭</button>
+      </div>
+
+      <div class="volume-container">
+        <span class="volume-icon">🔊</span>
+        <div class="volume-slider"></div>
+      </div>
+
+      <div class="action-buttons">
+        <input type="checkbox" id="like" class="action-checkbox">
+        <label for="like" class="action-label">♡</label>
+
+        <input type="checkbox" id="shuffle" class="action-checkbox">
+        <label for="shuffle" class="action-label">🔀</label>
+
+        <input type="checkbox" id="repeat" class="action-checkbox">
+        <label for="repeat" class="action-label">🔁</label>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

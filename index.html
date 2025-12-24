@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Music Player - Your Personal Music Library</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Hidden inputs for state management -->
+  <input type="checkbox" id="play-pause" class="hidden-input">
+  <input type="checkbox" id="like-toggle" class="hidden-input">
+  <input type="checkbox" id="shuffle-toggle" class="hidden-input">
+  <input type="checkbox" id="repeat-toggle" class="hidden-input">
+  
+  <!-- Song selection radios -->
+  <input type="radio" name="song" id="song-1" class="hidden-input" checked>
+  <input type="radio" name="song" id="song-2" class="hidden-input">
+  <input type="radio" name="song" id="song-3" class="hidden-input">
+  <input type="radio" name="song" id="song-4" class="hidden-input">
+  <input type="radio" name="song" id="song-5" class="hidden-input">
+  <input type="radio" name="song" id="song-6" class="hidden-input">
+  <input type="radio" name="song" id="song-7" class="hidden-input">
+  <input type="radio" name="song" id="song-8" class="hidden-input">
+  <input type="radio" name="song" id="song-9" class="hidden-input">
+  <input type="radio" name="song" id="song-10" class="hidden-input">
+  <input type="radio" name="song" id="song-11" class="hidden-input">
+  <input type="radio" name="song" id="song-12" class="hidden-input">
+  <input type="radio" name="song" id="song-13" class="hidden-input">
+  <input type="radio" name="song" id="song-14" class="hidden-input">
+  <input type="radio" name="song" id="song-15" class="hidden-input">
+  <input type="radio" name="song" id="song-16" class="hidden-input">
+  <input type="radio" name="song" id="song-17" class="hidden-input">
+  <input type="radio" name="song" id="song-18" class="hidden-input">
+  <input type="radio" name="song" id="song-19" class="hidden-input">
+  <input type="radio" name="song" id="song-20" class="hidden-input">
+  <input type="radio" name="song" id="song-21" class="hidden-input">
+  <input type="radio" name="song" id="song-22" class="hidden-input">
+  <input type="radio" name="song" id="song-23" class="hidden-input">
+  <input type="radio" name="song" id="song-24" class="hidden-input">
+
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="logo">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <polygon points="10 8 16 12 10 16 10 8"/>
+        </svg>
+        <span>MusicFlow</span>
+      </div>
+      
+      <nav class="nav-menu">
+        <a href="#" class="nav-item active">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+          </svg>
+          Home
+        </a>
+        <a href="#" class="nav-item">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.35-4.35"/>
+          </svg>
+          Search
+        </a>
+        <a href="#" class="nav-item">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="8" y1="6" x2="21" y2="6"/>
+            <line x1="8" y1="12" x2="21" y2="12"/>
+            <line x1="8" y1="18" x2="21" y2="18"/>
+            <line x1="3" y1="6" x2="3.01" y2="6"/>
+            <line x1="3" y1="12" x2="3.01" y2="12"/>
+            <line x1="3" y1="18" x2="3.01" y2="18"/>
+          </svg>
+          Library
+        </a>
+      </nav>
+
+      <div class="playlists">
+        <h3>Playlists</h3>
+        <a href="#" class="playlist-item">Favorites</a>
+        <a href="#" class="playlist-item">Chill Vibes</a>
+        <a href="#" class="playlist-item">Workout Mix</a>
+        <a href="#" class="playlist-item">Road Trip</a>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="header">
+        <h1>Your Library</h1>
+        <div class="user-menu">
+          <div class="user-avatar">AT</div>
+        </div>
+      </header>
+
+      <!-- Playlist Section -->
+      <section class="playlist-section">
+        <h2>Recently Played</h2>
+        
+        <div class="song-list">
+          <!-- Song 1 -->
+          <label for="song-1" class="song-item">
+            <div class="song-info">
+              <div class="song-cover">
+                <img src="/public/songs.jpg" alt="Album">
+              </div>
+              <div class="song-details">
+                <div class="song-title">Midnight Dreams</div>
+                <div class="song-artist">Luna Nova</div>
+              </div>
+            </div>
+            <div class="song-album">Neon Nights</div>
+            <div class="song-duration">3:45</div>
+            <div class="music-bars">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </label>
+
+          <!-- Song 2 -->
+          <label for="song-2" class="song-item">
+            <div class="song-info">
+              <div class="song-cover">
+                <img src="/public/songs.jpg" alt="Album">
+              </div>
+              <div class="song-details">
+                <div class="song-title">Electric Hearts</div>
+                <div class="song-artist">The Synthetics</div>
+              </div>
+            </div>
+            <div class="song-album">Digital Love</div>
+            <div class="song-duration">4:12</div>
+            <div class="music-bars">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </label>
+
+          <!-- Song 3 -->
+          <label for="song-3" class="song-item">
+            <div class="song-info">
+              <div class="song-cover">
+                <img src="/public/songs.jpg" alt="Album">
+              </div>
+              <div class="song-details">
+                <div class="song-title">Summer Breeze</div>
+                <div class="song-artist">Coastal Waves</div>
+              </div>
+            </div>
+            <div class="song-album">Seaside Stories</div>
+            <div class="song-duration">3:28</div>
+            <div class="music-bars">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </label>
+
+          <!-- Song 4 -->
+          <label for="song-4" class="song-item">
+            <div class="song-info">
+              <div class="song-cover">
+                <img src="/public/songs.jpg" alt="Album">
+              </div>
+              <div class="song-details">
+                <div class="song-title">Neon Lights</div>
+                <div class="song-artist">City Nights Band</div>
+              </div>
+            </div>
+            <div class="song-album">Urban Dreams</div>
+            <div class="song-duration">3:55</div>
+            <div class="music-bars">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </label>
+
+          <!-- Song 5 -->
+          <label for="song-5" class="song-item">
+            <div class="song-info">
+              <div class="song-cover">
+                <img src="/public/songs.jpg" alt="Album">
+              </div>
+              <div class="song-details">
+                <div class="song-title">Forest Echo</div>
+                <div class="song-artist">Nature's Call</div>
+              </div>
+            </div>
+            <div class="song-album">Wilderness</div>
+            <div class="song-duration">4:20</div>
+            <div class="music-bars">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </label>
+
+          <!-- Song 6 -->
+          <label for="song-6" class="song-item">
+            <div class="song-info">
+              <div class="song-cover">
+                <img src="public/songs.jpg" alt="Album">
+              </div>
+              <div class="song-details">
+                <div class="song-title">Fire Dance</div>
+                <div class="song-artist">Rhythm Makers</div>
+              </div>
+            </div>
+            <div class="song-album">Heat Wave</div>
+            <div class="song-duration">3:38</div>
+            <div class="music-bars">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </label>
+
+          <!-- Song 7 -->
+          <label for="song-7" class="song-item">
+            <div class="song-info">
+              <div class="song-cover">
+                <img src="/public/songs.jpg" alt="Album">
+              </div>
+              <div class="song-details">
+                <div class="song-title">Golden Hour</div>
+                <div class="song-artist">Sunset Society</div>
+              </div>
+            </div>
+            <div class="song-album">Day's End</div>
+            <div class="song-duration">4:05</div>
+            <div class="music-bars">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </label>
+
+          <!-- Song 8 -->
+          <label for="song-8" class="song-item">
+            <div class="song-info">
+              <div class="song-cover">
+                <img src="/public/songs.jpg" alt="Album">
+              </div>
+              <div class="song-details">
+                <div class="song-title">Ocean Waves</div>
+                <div class="song-artist">Deep Blue</div>
+              </div>
+            </div>
+            <div class="song-album">Aquatic</div>
+            <div class="song-duration">3:52</div>
+            <div class="music-bars">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </label>
+
+          <!-- Song 9 -->
+          <label for="song-9" class="song-item">
+            <div class="song-info">
+              <div class="song-cover">
+                <img src="/public/songs.jpg" alt="Album">
+              </div>
+              <div class="song-details">
+                <div class="song-title">Starlight</div>
+                <div class="song-artist">Cosmic Travelers</div>
+              </div>
+            </div>
+            <div class="song-album">Galaxy Tour</div>
+            <div class="song-duration">4:30</div>
+            <div class="music-bars">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </label>
+
+          <!-- Song 10 -->
+          <label for="song-10" class="song-item">
+            <div class="song-info">
+              <div class="song-cover">
+                <img src="/public/songs.jpg" alt="Album">
+              </div>
+              <div class="song-details">
+                <div class="song-title">Desert Wind</div>
+                <div class="song-artist">Sand Dunes</div>
+              </div>
+            </div>
+            <div class="song-album">Sahara</div>
+            <div class="song-duration">3:42</div>
+            <div class="music-bars">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </label>
+
+          <!-- Song 11 -->
+          <label for="song-11" class="song-item">
+            <div class="song-info">
+              <div class="song-cover">
+                <img src="/public/songs.jpg" alt="Album">
+              </div>
+              <div class="song-details">
+                <div class="song-title">Purple Rain</div>
+                <div class="song-artist">Storm Chasers</div>
+              </div>
+            </div>
+            <div class="song-album">Weather Patterns</div>
+            <div class="song-duration">4:15</div>
+            <div class="music-bars">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </label>
+
+          <!-- Song 12 -->
+          <label for="song-12" class="song-item">
+            <div class="song-info">
+              <div class="song-cover">
+                <img src="/public/songs.jpg" alt="Album">
+              </div>
+              <div class="song-details">
+                <div class="song-title">Spring Awakening</div>
+                <div class="song-artist">Green Fields</div>
+              </div>
+            </div>
+            <div class="song-album">Seasons</div>
+            <div class="song-duration">3:58</div>
+            <div class="music-bars">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </label>
+
+          <!-- Song 13 -->
+          <label for="song-13" class="song-item">
+            <div class="song-info">
+              <div class="song-cover">
+                <img src="/public/songs.jpg" alt="Album">
+              </div>
+              <div class="song-details">
+                <div class="song-title">Velvet Dreams</div>
+                <div class="song-artist">Silk Road</div>
+              </div>
+            </div>
+            <div class="song-album">Luxury</div>
+            <div class="song-duration">4:08</div>
+            <div class="music-bars">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </label>
+
+          <!-- Song 14 -->
+          <label for="song-14" class="song-item">
+            <div class="song-info">
+              <div class="song-cover">
+                <img src="/public/songs.jpg" alt="Album">
+              </div>
+              <div class="song-details">
+                <div class="song-title">Ice Crystal</div>
+                <div class="song-artist">Frozen Echo</div>
+              </div>
+            </div>
+            <div class="song-album">Winter Tales</div>
+            <div class="song-duration">3:33</div>
+            <div class="music-bars">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </label>
+
+          <!-- Song 15 -->
+          <label for="song-15" class="song-item">
+            <div class="song-info">
+              <div class="song-cover">
+                <img src="/public/songs.jpg" alt="Album">
+              </div>
+              <div class="song-details">
+                <div class="song-title">Amber Glow</div>
+                <div class="song-artist">Warm Nights</div>
+              </div>
+            </div>
+            <div class="song-album">Cozy Corners</div>
+            <div class="song-duration">4:22</div>
+            <div class="music-bars">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </label>
+
+          <!-- Song 16 -->
+          <label for="song-16" class="song-item">
+            <div class="song-info">
+              <div class="song-cover">
+                <img src="/public/songs.jpg" alt="Album">
+              </div>
+              <div class="song-details">
+                <div class="song-title">Rose Garden</div>
+                <div class="song-artist">Petal Pushers</div>
+              </div>
+            </div>
+            <div class="song-album">Botanical</div>
+            <div class="song-duration">3:47</div>
+            <div class="music-bars">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </label>
+
+          <!-- Song 17 -->
+          <label for="song-17" class="song-item">
+            <div class="song-info">
+              <div class="song-cover">
+                <img src="/public/songs.jpg" alt="Album">
+              </div>
+              <div class="song-details">
+                <div class="song-title">Deep Navy</div>
+                <div class="song-artist">Maritime</div>
+              </div>
+            </div>
+            <div class="song-album">Sea Voyage</div>
+            <div class="song-duration">4:18</div>
+            <div class="music-bars">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </label>
+
+          <!-- Song 18 -->
+          <label for="song-18" class="song-item">
+            <div class="song-info">
+              <div class="song-cover">
+                <img src="/public/songs.jpg" alt="Album">
+              </div>
+              <div class="song-details">
+                <div class="song-title">Mint Fresh</div>
+                <div class="song-artist">Cool Breeze</div>
+              </div>
+            </div>
+            <div class="song-album">Refreshed</div>
+            <div class="song-duration">3:25</div>
+            <div class="music-bars">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </label>
+
+          <!-- Song 19 -->
+          <label for="song-19" class="song-item">
+            <div class="song-info">
+              <div class="song-cover">
+                <img src="/public/songs.jpg" alt="Album">
+              </div>
+              <div class="song-details">
+                <div class="song-title">Peach Paradise</div>
+                <div class="song-artist">Tropical Dreams</div>
+              </div>
+            </div>
+            <div class="song-album">Island Vibes</div>
+            <div class="song-duration">4:02</div>
+            <div class="music-bars">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </label>
+
+          <!-- Song 20 -->
+          <label for="song-20" class="song-item">
+            <div class="song-info">
+              <div class="song-cover">
+                <img src="/public/songs.jpg" alt="Album">
+              </div>
+              <div class="song-details">
+                <div class="song-title">Stone Cold</div>
+                <div class="song-artist">Rock Solid</div>
+              </div>
+            </div>
+            <div class="song-album">Foundations</div>
+            <div class="song-duration">3:50</div>
+            <div class="music-bars">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </label>
+
+          <!-- Song 21 -->
+          <label for="song-21" class="song-item">
+            <div class="song-info">
+              <div class="song-cover">
+                <img src="public/songs.jpg" alt="Album">
+              </div>
+              <div class="song-details">
+                <div class="song-title">Wine & Roses</div>
+                <div class="song-artist">Vintage Soul</div>
+              </div>
+            </div>
+            <div class="song-album">Classic Collection</div>
+            <div class="song-duration">4:12</div>
+            <div class="music-bars">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </label>
+
+          <!-- Song 22 -->
+          <label for="song-22" class="song-item">
+            <div class="song-info">
+              <div class="song-cover">
+                <img src="/public/songs.jpg" alt="Album">
+              </div>
+              <div class="song-details">
+                <div class="song-title">Turquoise Bay</div>
+                <div class="song-artist">Lagoon Legends</div>
+              </div>
+            </div>
+            <div class="song-album">Paradise Found</div>
+            <div class="song-duration">3:56</div>
+            <div class="music-bars">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </label>
+
+          <!-- Song 23 -->
+          <label for="song-23" class="song-item">
+            <div class="song-info">
+              <div class="song-cover">
+                <img src="/public/songs.jpg" alt="Album">
+              </div>
+              <div class="song-details">
+                <div class="song-title">Dark Matter</div>
+                <div class="song-artist">Black Hole Band</div>
+              </div>
+            </div>
+            <div class="song-album">Space Odyssey</div>
+            <div class="song-duration">4:28</div>
+            <div class="music-bars">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </label>
+
+          <!-- Song 24 -->
+          <label for="song-24" class="song-item">
+            <div class="song-info">
+              <div class="song-cover">
+                <img src="/public/songs.jpg" alt="Album">
+              </div>
+              <div class="song-details">
+                <div class="song-title">Golden Days</div>
+                <div class="song-artist">Memory Lane</div>
+              </div>
+            </div>
+            <div class="song-album">Nostalgia</div>
+            <div class="song-duration">4:35</div>
+            <div class="music-bars">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </label>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Music Player Footer -->
+  <footer class="player-footer">
+    <div class="player-container">
+      <!-- Now Playing -->
+      <div class="now-playing">
+        <div class="album-art">
+          <img src="/public/music.png" alt="Album">
+        </div>
+        <div class="track-info">
+          <div class="track-title">Midnight Dreams</div>
+          <div class="track-artist">Luna Nova</div>
+        </div>
+        <label for="like-toggle" class="icon-btn like-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+        </label>
+      </div>
+
+      <!-- Player Controls -->
+      <div class="player-controls">
+        <div class="control-buttons">
+          <label for="shuffle-toggle" class="icon-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="16 3 21 3 21 8"/>
+              <line x1="4" y1="20" x2="21" y2="3"/>
+              <polyline points="21 16 21 21 16 21"/>
+              <line x1="15" y1="15" x2="21" y2="21"/>
+              <line x1="4" y1="4" x2="9" y2="9"/>
+            </svg>
+          </label>
+
+          <button class="icon-btn" type="button">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="19 20 9 12 19 4 19 20"/>
+              <polygon points="9 20 9 4 5 4 5 20 9 20"/>
+            </svg>
+          </button>
+
+          <label for="play-pause" class="play-btn">
+            <svg class="play-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="5 3 19 12 5 21 5 3"/>
+            </svg>
+            <svg class="pause-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <rect x="6" y="4" width="4" height="16"/>
+              <rect x="14" y="4" width="4" height="16"/>
+            </svg>
+          </label>
+
+          <button class="icon-btn" type="button">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="5 4 15 12 5 20 5 4"/>
+              <polygon points="15 4 15 20 19 20 19 4 15 4"/>
+            </svg>
+          </button>
+
+          <label for="repeat-toggle" class="icon-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="17 1 21 5 17 9"/>
+              <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+              <polyline points="7 23 3 19 7 15"/>
+              <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+            </svg>
+          </label>
+        </div>
+
+        <div class="progress-bar">
+          <span class="time-current">1:23</span>
+          <div class="progress-track">
+            <div class="progress-fill"></div>
+            <input type="range" min="0" max="100" value="33" class="progress-slider">
+          </div>
+          <span class="time-total">3:45</span>
+        </div>
+      </div>
+
+      <!-- Volume Control -->
+      <div class="volume-control">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+          <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+        </svg>
+        <input type="range" min="0" max="100" value="70" class="volume-slider">
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
